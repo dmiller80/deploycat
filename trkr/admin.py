@@ -8,9 +8,9 @@ class ClientList(admin.ModelAdmin):
     ordering = ['client_id']
 
 class ActivityList(admin.ModelAdmin):
-    list_display = ('client', 'date', 'type')
-    list_filter = ('client', 'date')
-    search_fields = ('client', 'date')
+    list_display = ('id', 'client', 'date', 'type')
+    list_filter = ('id', 'client', 'date')
+    search_fields = ('id', 'client', 'date')
     ordering = ['client']
 
 class ExerciseList(admin.ModelAdmin):

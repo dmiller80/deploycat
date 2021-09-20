@@ -39,6 +39,7 @@ class Exercise(models.Model):
         return str(self.exercise_id)
 
 class Activity(models.Model):
+    id = models.AutoField(primary_key=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='activity')
     date = models.DateField(default=timezone.now)
     type = models.ForeignKey(Exercise, on_delete=models.CASCADE, related_name='exercise')
