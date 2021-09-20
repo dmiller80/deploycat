@@ -29,32 +29,27 @@ class Client(models.Model):
     def __str__(self):
         return str(self.client_id)
 
-class Activity(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='activity')
-    activity_date = models.DateField(default=timezone.now)
-    exercise_type = models.CharField(max_length=50)
-    duration = models.DecimalField(max_digits=7, decimal_places=1)
+class Exercise(models.Model):
+    exercise_id = models.IntegerField(blank=False, null=False)
+    name = models.CharField(max_length=50)
+    cal_minute = models.DecimalField(max_digits=7, decimal_places=1)
     note = models.CharField(max_length=200)
 
     def __str__(self):
-        return str(self.client)
+        return str(self.exercise_id)
 
-class Fund(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='funds')
-    name = models.CharField(max_length=50)
-    type = models.CharField(max_length=200)
-    acquired_value = models.DecimalField(max_digits=10, decimal_places=2)
-    acquired_date = models.DateField(default=timezone.now)
-    recent_value = models.DecimalField(max_digits=10, decimal_places=2)
-    recent_date = models.DateField(default=timezone.now, blank=True, null=True)
+class Activity(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='activity')
+    date = models.DateField(default=timezone.now)
+    type = models.ForeignKey(Exercise, on_delete=models.CASCADE, related_name='exercise')
+    duration = models.DecimalField(max_digits=7, decimal_places=1)
+    note = models.CharField(max_length=200)
 
-    def created(self):
-        self.acquired_date = timezone.now()
-        self.save()
-
-    def updated(self):
-        self.recent_date = timezone.now()
-        self.save()
+    class Meta:
+        verbose_name_plural = "Activities"
 
     def __str__(self):
-        return str(self.customer)
+        return str(self.client_id)
+
+
+
