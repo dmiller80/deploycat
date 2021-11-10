@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-# from .forms import *
+from .forms import *
 from .models import *
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
@@ -33,7 +33,7 @@ def client_edit(request, pk):
             # page_number = request.GET.get('page')
             # page_obj = paginator.get_page(page_number)
 
-            return render(request, 'portfolio/client_list.html',
+            return render(request, 'trkr/client_list.html',
                          {'client': client})
     else:
         # edit
