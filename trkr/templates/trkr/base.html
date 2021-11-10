@@ -1,0 +1,158 @@
+{% load static %}
+<html lang="en">
+<head>
+    <title>Client Activity Tracker (CAT v1.0)</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <style>
+        /* Remove the navbar's default margin-bottom and rounded borders */
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .row.content {
+            height: 450px
+        }
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            padding-top: 20px;
+            background-color: lightgray;
+            height: 100%;
+        }
+
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #lightgray;
+            color: white;
+            padding: 15px;
+        }
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+
+            .row.content {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body id="app-layout">
+<!-- Nav bar component is a modification to Spring 2021 'KITS' group project in ISQA 3900
+  reused with permission from Cameron Rippey -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 5px;">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="{% url 'trkr:home' %}">
+        <!-- Logo is here -->
+      <img src="{% static 'images/cat.jfif' %}" alt="" width="30" height="30" class="d-inline-block align-self-center">
+      <b>Client Activity Tracker (CAT v1.0)</b>
+    </a>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarText">
+      <div class="navbar-nav mb-2 mb-lg-0">
+        <a class="nav-link active" aria-current="page" href="">Home</a>
+        <a class="nav-link" href="{% url 'trkr:client_list' %}">Clients</a>
+
+          <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Investment Types
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="">Investments (non-Stock)</a></li>
+              <li><a class="dropdown-item" href="">Funds</a></li>
+              <li><a class="dropdown-item" href="">Stocks</a></li>
+          </ul>
+          </div>
+          <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Reports by Type
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="">Investments (non-Stock)</a></li>
+              <li><a class="dropdown-item" href="">Funds</a></li>
+              <li><a class="dropdown-item" href="">Stocks</a></li>
+          </ul>
+          </div>
+
+        <a class="nav-link" href="">Help</a>
+      </div>
+    </div>
+        <div>
+            {% if user.is_authenticated %}
+            <span class="navbar-text">Welcome, {{ user.get_username }}.</span>
+            <a class="btn-sm btn-outline-danger" href="{% url 'logout' %}" id="logout_button">Log Out</a>
+            {% else %}
+            <a class="btn-sm btn-outline-success" href="{% url 'login' %}" id="login_button">Log In</a>
+            {% endif %}
+        </div>
+
+  </div>
+</nav>
+<div class="content container">
+    <div class="row">
+        <div class="col-md-8">
+            {% block content %}
+                <div class="links">
+                    <!-- Example row of columns -->
+                    <div class="row" >
+                        <div class="col-md-3">
+                            <div class="thumbnail">
+                                <img src="{% static "images/customer.jpg" %}" alt="customer"/>
+                                <div class="caption">
+                                    <h2>Customers</h2>
+                                    <p>We see our success in our customer's success. </p>
+                                    {% if user.is_authenticated %}
+                                        <p><a class="btn btn-default" href=""
+                                              role="button">View
+                                            details &raquo;</a></p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="thumbnail">
+                                <img src="{% static "images/nonstock.jpg" %}" alt="non-stock"/>
+                                <div class="caption">
+                                    <h2>Non-Stock Investments</h2>
+                                    <p>Our team also provides advise for Non-Stock investments.</p>
+                                    <p><a class="btn btn-default" href=""
+                                           role="button">View investment
+                                        details &raquo;</a></p>
+                                    <p><a class="btn btn-default" href=""
+                                           role="button">View Fund
+                                        details &raquo;</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="thumbnail">
+                                <img src="{% static "images/stocks.jpg" %}" alt="stocks"/>
+                                <div class="caption">
+                                    <h2>Stock Portfolio</h2>
+                                    <p>Our Stock portfolios vary across industries.</p>
+                                    <p><a class="btn btn-default" href="" role="button">View
+                                        details &raquo;</a></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>

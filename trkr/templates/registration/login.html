@@ -1,0 +1,31 @@
+{% extends 'trkr/base.html' %}
+{% block content %}
+
+    <div class="d-flex flex-column align-items-center mt-5">
+
+            {% if form.errors %}
+                <div class="alert alert-warning" role="alert">
+                 Invalid username or password. Please try again or select Forgot Password.
+                </div>
+            {% endif %}
+
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <table>
+          <tr>
+            <td>{{ form.username.label_tag }}</td>
+            <td>{{ form.username }}</td>
+          </tr>
+          <tr>
+            <td>{{ form.password.label_tag }}</td>
+            <td>{{ form.password }}</td>
+          </tr>
+        </table>
+          <br/>
+        <input class="btn btn-success" type="submit" value="Login" />
+        <input type="hidden" name="next" value="{{ next }}" />
+        <a href="{% url 'password_reset' %}" class="btn btn-primary">Forgot Password</a>
+      </form>
+
+    </div>
+{% endblock content %}

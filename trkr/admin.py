@@ -2,22 +2,22 @@ from django.contrib import admin
 from .models import Client, Activity, Exercise
 
 class ClientList(admin.ModelAdmin):
-    list_display = ('client_id', 'name', 'nick_name', 'cell_phone')
-    list_filter = ('client_id', 'name')
-    search_fields = ('client_id', 'name')
-    ordering = ['client_id']
+    list_display = ('name', 'nick_name', 'cell_phone')
+    list_filter = ('name', 'nick_name')
+    search_fields = ('name', 'nick_name')
+    ordering = ['name']
 
 class ActivityList(admin.ModelAdmin):
-    list_display = ('id', 'client', 'date', 'type')
-    list_filter = ('id', 'client', 'date')
-    search_fields = ('id', 'client', 'date')
+    list_display = ('client', 'date', 'type')
+    list_filter = ('client', 'date')
+    search_fields = ('client', 'date')
     ordering = ['client']
 
 class ExerciseList(admin.ModelAdmin):
-    list_display = ('exercise_id', 'name', 'cal_minute', 'note')
-    list_filter = ('exercise_id', 'name')
-    search_fields = ('exercise_id', 'name', 'note')
-    ordering = ['exercise_id']
+    list_display = ('id', 'name', 'cal_minute', 'note')
+    list_filter = ('id', 'name')
+    search_fields = ('id', 'name', 'note')
+    ordering = ['name']
 
 
 admin.site.register(Client, ClientList)
