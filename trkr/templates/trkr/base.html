@@ -68,12 +68,12 @@
 
           <div class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Investment Types
+            Categories
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="">Investments (non-Stock)</a></li>
-              <li><a class="dropdown-item" href="">Funds</a></li>
-              <li><a class="dropdown-item" href="">Stocks</a></li>
+              <li><a class="dropdown-item" href="{% url 'trkr:client_list' %}">Clients</a></li>
+              <li><a class="dropdown-item" href="{% url 'trkr:exercise_list' %}">Exercises</a></li>
+              <li><a class="dropdown-item" href="">Activities</a></li>
           </ul>
           </div>
           <div class="nav-item dropdown">

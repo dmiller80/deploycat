@@ -46,3 +46,64 @@ def client_delete(request, pk):
     client.delete()
     return redirect('trkr:client_list')
 
+@login_required
+def client_new(request):
+    if request.method == "POST":
+        form = ClientForm(request.POST)
+        if form.is_valid():
+            client = form.save(commit=False)
+            client.created_date = timezone.now()
+            client.save()
+            client = Client.objects.filter(created_date__lte=timezone.now())
+            return render(request, 'trkr/client_list.html',
+                         {'client': client})
+    else:
+        form = ClientForm()
+        # print("Else")
+    return render(request, 'trkr/client_new.html', {'form': form})
+
+
+@login_required
+def exercise_list(request):
+    exercise = Exercise.objects.filter()
+    return render(request, 'trkr/exercise_list.html', {'exercise': exercise})
+
+@login_required
+def exercise_edit(request, pk):
+    exercise = get_object_or_404(Exercise, pk=pk)
+    if request.method == "POST":
+        # update
+        form = ExerciseForm(request.POST, instance=exercise)
+        if form.is_valid():
+            exercise = form.save(commit=False)
+            exercise.updated_date = timezone.now()
+            exercise.save()
+            exercise = Exercise.objects.filter()
+
+            return render(request, 'trkr/exercise_list.html',
+                         {'exercise': exercise})
+    else:
+        # edit
+        form = ExerciseForm(instance=exercise)
+    return render(request, 'trkr/exercise_edit.html', {'form': form})
+
+@login_required
+def exercise_delete(request, pk):
+    exercise = get_object_or_404(Exercise, pk=pk)
+    exercise.delete()
+    return redirect('trkr:exercise_list')
+
+@login_required
+def exercise_new(request):
+    if request.method == "POST":
+        form = ExerciseForm(request.POST)
+        if form.is_valid():
+            exercise = form.save(commit=False)
+            exercise.save()
+            exercise = Exercise.objects.filter()
+            return render(request, 'trkr/exercise_list.html',
+                         {'exercise': exercise})
+    else:
+        form = ExerciseForm()
+        # print("Else")
+    return render(request, 'trkr/exercise_new.html', {'form': form})

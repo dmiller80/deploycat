@@ -1,0 +1,9 @@
+{% extends 'trkr/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <h1>Add a New Exercise</h1>
+    <form method="POST" class="exercise-form">{% csrf_token %}
+          {{ form|crispy }}
+        <button type="submit" class="save btn btn-primary">Save</button>
+    </form>
+{% endblock %}
