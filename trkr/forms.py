@@ -12,3 +12,8 @@ class ExerciseForm(forms.ModelForm):
         model = Exercise
         fields = ('name', 'cal_minute', 'note', )
 
+class ActivityForm(forms.ModelForm):
+    class Meta:
+        model = Activity
+        fields = ('client', 'date', 'type', 'duration', 'note', )
+

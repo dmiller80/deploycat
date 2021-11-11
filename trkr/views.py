@@ -65,7 +65,7 @@ def client_new(request):
 
 @login_required
 def exercise_list(request):
-    exercise = Exercise.objects.filter()
+    exercise = Exercise.objects.all()
     return render(request, 'trkr/exercise_list.html', {'exercise': exercise})
 
 @login_required
@@ -76,9 +76,8 @@ def exercise_edit(request, pk):
         form = ExerciseForm(request.POST, instance=exercise)
         if form.is_valid():
             exercise = form.save(commit=False)
-            exercise.updated_date = timezone.now()
             exercise.save()
-            exercise = Exercise.objects.filter()
+            exercise = Exercise.objects.all()
 
             return render(request, 'trkr/exercise_list.html',
                          {'exercise': exercise})
@@ -100,10 +99,55 @@ def exercise_new(request):
         if form.is_valid():
             exercise = form.save(commit=False)
             exercise.save()
-            exercise = Exercise.objects.filter()
+            exercise = Exercise.objects.all()
             return render(request, 'trkr/exercise_list.html',
                          {'exercise': exercise})
     else:
         form = ExerciseForm()
         # print("Else")
     return render(request, 'trkr/exercise_new.html', {'form': form})
+
+@login_required
+def activity_list(request):
+    activity = Activity.objects.all()
+    return render(request, 'trkr/activity_list.html', {'activity': activity})
+
+@login_required
+def activity_edit(request, pk):
+    activity = get_object_or_404(Activity, pk=pk)
+    if request.method == "POST":
+        # update
+        form = ActivityForm(request.POST, instance=activity)
+        if form.is_valid():
+            activity = form.save(commit=False)
+            activity.save()
+            activity = Activity.objects.all()
+
+            return render(request, 'trkr/activity_list.html',
+                         {'activity': activity})
+    else:
+        # edit
+        form = ActivityForm(instance=activity)
+    return render(request, 'trkr/activity_edit.html', {'form': form})
+
+@login_required
+def activity_delete(request, pk):
+    activity = get_object_or_404(Activity, pk=pk)
+    activity.delete()
+    return redirect('trkr:activity_list')
+
+@login_required
+def activity_new(request):
+    if request.method == "POST":
+        form = ActivityForm(request.POST)
+        if form.is_valid():
+            activity = form.save(commit=False)
+            activity.save()
+            activity = Activity.objects.all()
+            return render(request, 'trkr/activity_list.html',
+                         {'activity': activity})
+    else:
+        form = ActivityForm()
+        # print("Else")
+    return render(request, 'trkr/activity_new.html', {'form': form})
+
