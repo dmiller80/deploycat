@@ -27,7 +27,9 @@ def client_edit(request, pk):
         # update
         form = ClientForm(request.POST, instance=client)
         if form.is_valid():
+            c_date = form.cleaned_date["date"]
             client = form.save(commit=False)
+            client.birth_date = c_date
             client.updated_date = timezone.now()
             client.save()
             client = Client.objects.filter(created_date__lte=timezone.now())
@@ -39,7 +41,7 @@ def client_edit(request, pk):
                          {'client': client})
     else:
         # edit
-        form = ClientForm(instance=client)
+        form = ClientForm(instance=client).as_p()
     return render(request, 'trkr/client_edit.html', {'form': form})
 
 @login_required
@@ -53,14 +55,34 @@ def client_new(request):
     if request.method == "POST":
         form = ClientForm(request.POST)
         if form.is_valid():
-            client = form.save(commit=False)
+            # 'name', 'nick_name', 'address', 'city', 'state', 'zipcode', 'email', 'cell_phone',
+            c_date = form.cleaned_data["date"]
+            c_name = form.cleaned_data["name"]
+            c_nick_name = form.cleaned_data["nick_name"]
+            c_address = form.cleaned_data["address"]
+            c_city = form.cleaned_data["city"]
+            c_state = form.cleaned_data["state"]
+            c_zipcode = form.cleaned_data["zipcode"]
+            c_email = form.cleaned_data["email"]
+            c_cell_phone = form.cleaned_data["cell_phone"]
+            client = Client()
+            client.name = c_name
+            client.nick_name = c_nick_name
+            client.address = c_address
+            client.city = c_city
+            client.state = c_state
+            client.zipcode = c_zipcode
+            client.email = c_email
+            client.cell_phone = c_cell_phone
+            # client = form.save(commit=False)
+            client.birth_date = c_date
             client.created_date = timezone.now()
             client.save()
             client = Client.objects.filter(created_date__lte=timezone.now())
             return render(request, 'trkr/client_list.html',
                          {'client': client})
     else:
-        form = ClientForm()
+        form = ClientForm().as_p()
         # print("Else")
     return render(request, 'trkr/client_new.html', {'form': form})
 
