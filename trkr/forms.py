@@ -15,5 +15,17 @@ class ExerciseForm(forms.ModelForm):
 class ActivityForm(forms.ModelForm):
     class Meta:
         model = Activity
-        fields = ('client', 'date', 'type', 'duration', 'note', )
+        fields = ('client', 'type', 'duration', 'note', )
+    date = forms.DateField(
+        widget=forms.TextInput(attrs={'type': 'date'})
+    )
+
+class NameForm(forms.ModelForm):
+    class Meta:
+        model = Activity
+        fields = ('client', 'type', 'duration', 'note', )
+    your_name = forms.CharField(label='Your name', max_length=100)
+    date = forms.DateField(
+        widget=forms.TextInput(attrs={'type': 'date'})
+    )
 

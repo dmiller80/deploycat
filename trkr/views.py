@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+
 from .forms import *
 from .models import *
 from django.shortcuts import render, get_object_or_404
@@ -141,13 +143,42 @@ def activity_new(request):
     if request.method == "POST":
         form = ActivityForm(request.POST)
         if form.is_valid():
-            activity = form.save(commit=False)
+            a_date = form.cleaned_data["date"]
+            a_type = form.cleaned_data["type"]
+            a_client = form.cleaned_data["client"]
+            a_duration = form.cleaned_data["duration"]
+            a_note = form.cleaned_data["note"]
+            activity = Activity()
+            activity.client_id = a_client.id
+            activity.type_id = a_type.id
+            activity.date = a_date
+            activity.note = a_note
+            activity.duration = a_duration
+            # activity = form.save(commit=False)
             activity.save()
             activity = Activity.objects.all()
             return render(request, 'trkr/activity_list.html',
                          {'activity': activity})
     else:
-        form = ActivityForm()
+        form = ActivityForm().as_p()
         # print("Else")
     return render(request, 'trkr/activity_new.html', {'form': form})
 
+def get_test(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NameForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            a_type = form.cleaned_data["your_name"]
+            a_date = form.cleaned_data["date"]
+            # redirect to a new URL:
+            return HttpResponseRedirect('/home/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = NameForm().as_p()
+
+    return render(request, 'trkr/test.html', {'form': form})
