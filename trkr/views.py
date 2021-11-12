@@ -121,7 +121,18 @@ def activity_edit(request, pk):
         # update
         form = ActivityForm(request.POST, instance=activity)
         if form.is_valid():
-            activity = form.save(commit=False)
+            a_date = form.cleaned_data["date"]
+            a_type = form.cleaned_data["type"]
+            a_client = form.cleaned_data["client"]
+            a_duration = form.cleaned_data["duration"]
+            a_note = form.cleaned_data["note"]
+            activity = Activity()
+            activity.client_id = a_client.id
+            activity.type_id = a_type.id
+            activity.date = a_date
+            activity.note = a_note
+            activity.duration = a_duration
+            # activity = form.save(commit=False)
             activity.save()
             activity = Activity.objects.all()
 
@@ -129,7 +140,7 @@ def activity_edit(request, pk):
                          {'activity': activity})
     else:
         # edit
-        form = ActivityForm(instance=activity)
+        form = ActivityForm(instance=activity).as_p()
     return render(request, 'trkr/activity_edit.html', {'form': form})
 
 @login_required
