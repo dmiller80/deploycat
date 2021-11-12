@@ -1,0 +1,13 @@
+{% extends 'trkr/base.html' %}
+{% load static %}
+{% block content %}
+    <html>
+    <body>
+        <form method="POST" action="/your-name/" >
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Submit" />
+        </form>
+    </body>
+    </html>
+{% endblock %}
