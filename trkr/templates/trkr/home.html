@@ -9,41 +9,34 @@
                             <div class="row gx-5">
                                 <div class="col-lg-4">
                                     <div class="thumbnail">
-                                        <img src="{% static "images/customer.jpg" %}" alt="customer"/>
+                                        <img src="{% static "images/customer2.jpg" %}" alt="client"/>
                                         <div class="caption">
-                                            <h2>Customers</h2>
-                                            <p>We see our success in our customers' success. </p>
-                                            <p><a class="btn btn-primary" href=""
-                                                  role="button">View
-                                                details &raquo;</a></p>
+                                            <h2>Manage Clients</h2>
+                                            <p>Get more people to the gym! </p>
+                                            <p><a class="btn btn-primary" href="{% url 'trkr:client_list' %}"
+                                                  role="button">View Clients &raquo;</a></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="thumbnail">
-                                        <img src="{% static "images/nonstock.jpg" %}" alt="non-stock"/>
+                                        <img src="{% static "images/weightss1.JPG" %}" alt="non-stock"/>
                                         <div class="caption">
-                                            <h2>Non-Stock Investments</h2>
-                                            <p>Our team also provides advise for Non-Stock investments.</p>
-                                            <p><a class="btn btn-primary" href=""
-                                           role="button">View Investment
-                                            details &raquo;</a></p>
-                                            <p><a class="btn btn-primary" href=""
-                                           role="button">View Fund
-                                            details &raquo;</a></p>
-
+                                            <h2>Update Exercise List</h2>
+                                            <p></p>
+                                            <p><a class="btn btn-primary" href="{% url 'trkr:exercise_list' %}"
+                                           role="button">View Exercises</a></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="thumbnail">
-                                        <img src="{% static "images/stocks.jpg" %}" alt="stocks"/>
+                                        <img src="{% static "images/active.JPG" %}" alt="activities"/>
                                         <div class="caption">
-                                            <h2>Stocks</h2>
-                                            <p>Our Stock portfolios vary across industries.</p>
-                                            <p><a class="btn btn-primary" href=""
-                                                  role="button">View
-                                                details &raquo;</a></p>
+                                            <h2>Activities</h2>
+                                            <p>Manage Client Activities</p>
+                                            <p><a class="btn btn-primary" href="{% url 'trkr:activity_list' %}"
+                                                  role="button">View Activities &raquo;</a></p>
                                         </div>
                                     </div>
                                 </div>
