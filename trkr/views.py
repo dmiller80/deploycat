@@ -6,6 +6,8 @@ from .models import *
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from fpdf import *
+from django.http import FileResponse
 # Create your views here.
 
 def home(request):
@@ -197,21 +199,30 @@ def activity_new(request):
         # print("Else")
     return render(request, 'trkr/activity_new.html', {'form': form})
 
-def get_test(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = NameForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            a_type = form.cleaned_data["your_name"]
-            a_date = form.cleaned_data["date"]
-            # redirect to a new URL:
-            return HttpResponseRedirect('/home/')
+def index(request):
+    context = {}
+    return render(request, 'trkr/report.html', context=context)
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = NameForm().as_p()
+def report(request):
+    clients = Client.objects.all()
 
-    return render(request, 'trkr/test.html', {'form': form})
+    pdf = FPDF('L', 'mm', 'A4')
+    pdf.add_page()
+    pdf.set_font('courier', 'B', 16)
+    pdf.cell(40, 10, 'The list of all clients:', 0, 1)
+    pdf.cell(40, 10, '', 0, 1)
+    pdf.set_font('courier', '', 12)
+    pdf.cell(280, 8, f"{'Name'.ljust(20)}  {'Cell Phone'.ljust(11)}    {'Email'.ljust(30)} {'DOB'.rjust(10)}", 0, 1)
+    pdf.line(10, 30, 280, 30)
+    pdf.line(10, 38, 280, 38)
+    for c in clients:
+        pdf.cell(280, 8, f"{c.name.ljust(20)}  {c.cell_phone.ljust(11)}"
+                         f"    {c.email.ljust(30)} {c.birth_date.strftime('%m/%d/%y').rjust(10)}", 0, 1)
+
+#    for line in sales:
+#        pdf.cell(200, 8, f"{line['item'].ljust(30)} {line['amount'].rjust(20)}", 0, 1)
+
+    pdf.output('report.pdf', 'F')
+    return FileResponse(open('report.pdf', 'rb'), as_attachment=True,
+                        content_type='application/pdf')
+

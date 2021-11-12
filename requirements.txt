@@ -6,3 +6,5 @@ sqlparse==0.4.1
 psycopg2
 gunicorn
 django-heroku
+fpdf2
+fpdf~=1.7.2
