@@ -8,6 +8,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from fpdf import *
 from django.http import FileResponse
+from django.core.mail import EmailMessage
 # Create your views here.
 
 def home(request):
@@ -203,6 +204,7 @@ def index(request):
     context = {}
     return render(request, 'trkr/report.html', context=context)
 
+@login_required
 def report(request):
     clients = Client.objects.all()
 
@@ -219,10 +221,20 @@ def report(request):
         pdf.cell(280, 8, f"{c.name.ljust(20)}  {c.cell_phone.ljust(11)}"
                          f"    {c.email.ljust(30)} {c.birth_date.strftime('%m/%d/%y').rjust(10)}", 0, 1)
 
-#    for line in sales:
-#        pdf.cell(200, 8, f"{line['item'].ljust(30)} {line['amount'].rjust(20)}", 0, 1)
-
     pdf.output('report.pdf', 'F')
-    return FileResponse(open('report.pdf', 'rb'), as_attachment=True,
-                        content_type='application/pdf')
+    cur_user = request.user
+    email_addr = cur_user.email
+    email = EmailMessage(
+        'Client Report',
+        'See list of all clients attached in the PDF file.',
+        'from@example.com',
+        [email_addr],
+        reply_to=['another@example.com'],
+        headers={'Message-ID': 'foo'},
+    )
+    email.attach_file('report.pdf')
+    email.send()
+    # return FileResponse(open('report.pdf', 'rb'), as_attachment=True, content_type='application/pdf')
+    context = {}
+    return render(request, 'trkr/report.html', context=context)
 
